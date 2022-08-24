@@ -39,6 +39,7 @@ main{
 }
 
 .game-won{
+  margin-bottom: 20px;
   width: 100%;
   height: fit-content;
   font-weight: bold;
@@ -135,6 +136,12 @@ main{
   font-weight: bold;
   font-size: 1.25rem;
 }
+
+.final-text{
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
 .welcome-main{
   width: fit-content;
   height: fit-content;

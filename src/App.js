@@ -210,7 +210,8 @@ function App() {
                   <button className='roll-dice' onClick={rollDice}>
                     {tenzies ? "New Game" : "Roll"}</button>
                   <section>
-                    <p>{userStats.name} has rolled dice {userStats.totalRoll} in {userStats.minute}:{userStats.second} time
+                    <p className='final-text'>
+                        {userStats.name} has rolled dice {userStats.totalRoll} in {userStats.minute}:{userStats.second} time
                     </p>
                   </section>
                 </div>
