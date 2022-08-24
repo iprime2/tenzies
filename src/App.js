@@ -35,7 +35,7 @@ function App() {
   const [tenzies, setTenzies] = React.useState(false)
   
   React.useEffect(() =>{
-    localStorage.setItem("useStats", JSON.stringify(userStats))
+    localStorage.setItem("useStats", JSON.stringify(...userStats,userStats))
     
   }, [userStats])
 
@@ -188,7 +188,7 @@ function App() {
                   </div>
                   <button className='roll-dice' onClick={rollDice}>
                     {tenzies ? "New Game" : "Roll"}</button>
-                  <button onClick={update} className="roll-dice newuser-btn">Update</button>
+                  {/*<button onClick={update} className="roll-dice newuser-btn">Update</button>*/}
                   <section className='score-section'>
                     {score}
                   </section>
