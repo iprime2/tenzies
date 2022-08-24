@@ -159,7 +159,7 @@ function App() {
 
   const score = userStats.map(items => (
     <p className='final-text'>
-      {items.name} has rolled dice {items.totalRoll} in {items.minute}:{items.second} time
+      {items.name && `${items.name} has rolled dice ${items.totalRoll} in ${items.minute}:${items.second} time`}
     </p>
   ))
 
