@@ -21,7 +21,7 @@ code {
 main{
   margin: auto;
   max-width: 600px;
-  height: 600px;
+  height: fit-content;
   border-radius: 20px;
   background-color: aliceblue;
   border: 2px solid black;
@@ -157,4 +157,12 @@ main{
   height: 40px;
   border-radius: 10px;
   padding: 5px;
+}
+
+.score{
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
 }

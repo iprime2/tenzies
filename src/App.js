@@ -26,6 +26,8 @@ function App() {
     (userStats[0] && userStats[0].id) || ""
   )
 
+  const [userName, setUsername] = React.useState("None")
+
   const[isNewuser, setIsNewuser] = React.useState(false)
   const { width, height } = useWindowSize()
   const [dice, setDice] = React.useState(allNewDice())
@@ -33,7 +35,7 @@ function App() {
   const [tenzies, setTenzies] = React.useState(false)
   
   React.useEffect(() =>{
-    localStorage.setItem("useState", JSON.stringify(userStats))
+    localStorage.setItem("useStats", JSON.stringify(userStats))
     
   }, [userStats])
 
@@ -52,59 +54,16 @@ function App() {
 
   function updateUsername(event){
     const {value} = event.target
-    setUserStats(olduser => {
-      return olduser.map(item => {
-        return item.id === currentUserId ? 
-        {
-          ...olduser,
-          name:value
-        }: {...olduser}
-      })
+    setUsername(value) 
+  }
 
   function update(){
-    setUserStats(oldValues => {
-      return oldValues.map(item => {
-        return item.id === currentUserId ?
-        {
-          ...oldValues,
-          totalRoll:noRoll,
-          second:seconds,
-          minute:minutes
-        } :
-          {...oldValues}
-      })
-    })
+    
+    console.log(userStats)
+    
   }
 
-  function demo(){
-
-  }
-      /*return{
-        ...olduser,
-        id:nanoid(),
-        name:value,
-        totalRoll:0,
-        second:0,
-        minute:0
-
-      }*/
-    }) 
-  }
-
-  /*React.useEffect(() => {
-    setUserStats(oldValues => {
-      return oldValues.map((item) => {
-        return item.id === userStats.id ?
-        {
-          ...oldValues,
-          totalRoll:noRoll,
-          second:seconds,
-          minute:minutes
-        } :
-          {...oldValues}
-      })
-    })
-  },[isNewuser])*/
+  /*##################################################*/
 
   React.useEffect(() => {
     const allHeld = dice.every(die => die.isHeld)
@@ -112,9 +71,24 @@ function App() {
     const allSameValue = dice.every(die => die.value === firstValue )
     if (allHeld && allSameValue){
       setTenzies(true) 
-    }
-    console.log(userStats)
-    
+      setUserStats(oldValues => {
+        const newArray = []
+        for (let i=0; i<oldValues.length; i++){
+          const oldValue = oldValues[i]
+          if(oldValue.id === currentUserId){
+            newArray.unshift({
+              ...oldValue,
+              name:userName,
+              totalRoll:noRoll,
+              second:seconds,
+              minute:minutes})
+            }else{
+              newArray.push(oldValue)
+            }
+          }
+          return newArray
+        })
+    }    
   }, [dice])  
 
   function generateNewDie(){
@@ -181,7 +155,13 @@ function App() {
         isHeld={die.isHeld} 
         holdDice={() => holdDice(die.id)}
     />
-))
+  ))
+
+  const score = userStats.map(items => (
+    <p className='final-text'>
+      {items.name} has rolled dice {items.totalRoll} in {items.minute}:{items.second} time
+    </p>
+  ))
 
   return (
     <div className="App">
@@ -208,10 +188,9 @@ function App() {
                   </div>
                   <button className='roll-dice' onClick={rollDice}>
                     {tenzies ? "New Game" : "Roll"}</button>
-                  <section>
-                    <p className='final-text'>
-                        {userStats.name} has rolled dice {userStats.totalRoll} in {userStats.minute}:{userStats.second} time
-                    </p>
+                  <button onClick={update} className="roll-dice newuser-btn">Update</button>
+                  <section className='score-section'>
+                    {score}
                   </section>
                 </div>
               :
@@ -226,7 +205,7 @@ function App() {
                           onChange={updateUsername} />
                     <br />
                     <button onClick={createUser} className="roll-dice newuser-btn">Start</button>
-                    <button onClick={demo()} className="roll-dice newuser-btn">Update</button>
+                    
                   </div>
             }
           </main>
