@@ -93,7 +93,7 @@ function App() {
 
   function generateNewDie(){
     return {
-      value: 4/*Math.ceil(Math.random() * 6)*/,
+      value: Math.ceil(Math.random() * 6),
       isHeld: false,
       id: nanoid()
     }
