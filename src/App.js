@@ -4,7 +4,6 @@ import React from 'react';
 import {nanoid} from 'nanoid'
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
-import MyTime from './components/MyTime'
 import { useStopwatch } from 'react-timer-hook'
 
 function App() {
@@ -28,7 +27,6 @@ function App() {
   )
 
   const[isNewuser, setIsNewuser] = React.useState(false)
-
   const { width, height } = useWindowSize()
   const [dice, setDice] = React.useState(allNewDice())
   const [noRoll, setNoRoll] = React.useState(0)
@@ -36,7 +34,8 @@ function App() {
   
   React.useEffect(() =>{
     localStorage.setItem("useState", JSON.stringify(userStats))
-  },[userStats])
+    
+  }, [userStats])
 
   function createUser(){
     const Newuser = {
@@ -52,7 +51,7 @@ function App() {
   }
 
   function updateUsername(event){
-    const {name, value, type} = event.target
+    const {value} = event.target
     setUserStats(olduser => {
       return olduser.map(item => {
         return item.id === currentUserId ? 
@@ -61,6 +60,25 @@ function App() {
           name:value
         }: {...olduser}
       })
+
+  function update(){
+    setUserStats(oldValues => {
+      return oldValues.map(item => {
+        return item.id === currentUserId ?
+        {
+          ...oldValues,
+          totalRoll:noRoll,
+          second:seconds,
+          minute:minutes
+        } :
+          {...oldValues}
+      })
+    })
+  }
+
+  function demo(){
+
+  }
       /*return{
         ...olduser,
         id:nanoid(),
@@ -93,26 +111,7 @@ function App() {
     const firstValue = dice[0].value
     const allSameValue = dice.every(die => die.value === firstValue )
     if (allHeld && allSameValue){
-      setTenzies(true)
-      
-      setUserStats(oldValues => {
-        return oldValues.map(item => {
-          return item.id === currentUserId ?
-          {
-            ...oldValues,
-            totalRoll:noRoll,
-            second:seconds,
-            minute:minutes
-          } :
-            {...oldValues}
-        })
-      })
-      /*setUserStats(oldValues => {
-        return {...oldValues,
-        totalRoll:noRoll,
-        second:seconds,
-        minute:minutes}
-      })*/
+      setTenzies(true) 
     }
     console.log(userStats)
     
@@ -227,6 +226,7 @@ function App() {
                           onChange={updateUsername} />
                     <br />
                     <button onClick={createUser} className="roll-dice newuser-btn">Start</button>
+                    <button onClick={demo()} className="roll-dice newuser-btn">Update</button>
                   </div>
             }
           </main>
