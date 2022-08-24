@@ -21,7 +21,7 @@ code {
 main{
   margin: auto;
   max-width: 600px;
-  height: 500px;
+  height: fit-content;
   border-radius: 20px;
   background-color: aliceblue;
   border: 2px solid black;
@@ -39,6 +39,7 @@ main{
 }
 
 .game-won{
+  margin-bottom: 20px;
   width: 100%;
   height: fit-content;
   font-weight: bold;
@@ -119,4 +120,49 @@ main{
 
 .selected{
   background-color: #59E391;
+}
+
+.stats{
+  width: 100%;
+  height: fit-content;
+}
+
+.time{
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.no-diceroll{
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.final-text{
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.welcome-main{
+  width: fit-content;
+  height: fit-content;
+  margin-bottom: 100px;
+}
+
+.newuser-btn{
+  margin-top: 10px;
+}
+
+.input-username{
+  width: 250px;
+  height: 40px;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.score{
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
 }
