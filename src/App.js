@@ -18,6 +18,9 @@ function App() {
     reset,
   }= useStopwatch({ autoStart: true });
 
+  const [firstValue, setFirstValue] = React.useState(0)
+  const [duplicate, setDuplicate] = React.useState(true)
+
   const [userStats, setUserStats] = React.useState(
     () => JSON.parse(localStorage.getItem("userStats")) || []
   )
@@ -33,6 +36,8 @@ function App() {
   const [dice, setDice] = React.useState(allNewDice())
   const [noRoll, setNoRoll] = React.useState(0)
   const [tenzies, setTenzies] = React.useState(false)
+  const allHeld = dice.every(die => die.isHeld)
+  const allSameValue = dice.every(die => die.value === firstValue )
   
   React.useEffect(() =>{
     localStorage.setItem("useStats", JSON.stringify(...userStats,userStats))
@@ -57,18 +62,10 @@ function App() {
     setUsername(value) 
   }
 
-  function update(){
-    
-    console.log(userStats)
-    
-  }
-
   /*##################################################*/
 
   React.useEffect(() => {
-    const allHeld = dice.every(die => die.isHeld)
     const firstValue = dice[0].value
-    const allSameValue = dice.every(die => die.value === firstValue )
     if (allHeld && allSameValue){
       setTenzies(true) 
       setUserStats(oldValues => {
@@ -89,7 +86,7 @@ function App() {
           return newArray
         })
     }    
-  }, [dice])  
+  }, [dice]) 
 
   function generateNewDie(){
     return {
@@ -123,15 +120,38 @@ function App() {
     
   }
 
-  function holdDice(id) {
-    setDice(oldDice => oldDice.map(die => {
-      return die.id === id ? 
-          {...die, isHeld: !die.isHeld} :
-          die
-    }))
+  function holdDice(id, value) {
+    if (noRoll < 1 && duplicate){
+      setFirstValue(value)
+      setDuplicate(false)
+    }
+
+    if (noRoll > 0){
+      if(value !== firstValue)
+        alert("Please choose different Dice")
+      setDice(oldDice => oldDice.map(die => {
+        return die.id === id && !die.isHeld && die.value === firstValue? 
+            {...die, isHeld: !die.isHeld} :
+            {...die}
+      }))
+    }else if (noRoll === 0){
+      if (!duplicate)
+        if(value !== firstValue)
+          alert("Please choose different Dice")
+      setDice(oldDice => oldDice.map(die => {
+        return die.id === id 
+          ? {...die,
+              isHeld: !duplicate 
+                  ? die.value === firstValue 
+                    ? !die.isHeld
+                    : die.isHeld
+                  : !die.isHeld}
+          : {...die}
+      }))
+    }
   }
 
-  
+  console.log(dice)
 
   /*const [time, setTime] = React.useState({
     id:"",
@@ -151,9 +171,10 @@ function App() {
   const diceElements = dice.map(die => (
     <Die 
         key={die.id} 
+        id={die.id}
         value={die.value} 
         isHeld={die.isHeld} 
-        holdDice={() => holdDice(die.id)}
+        holdDice={holdDice}
     />
   ))
 

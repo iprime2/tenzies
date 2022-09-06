@@ -7,9 +7,9 @@ export default function Die(props){
     return(
         
         <div 
-            className="die-face" 
+            className={`dice-face ${props.isSelected ? "selected": ""}`}
             style={styles}  
-            onClick={props.holdDice}>
+            onClick={() => props.holdDice(props.id, props.value)}>
             <img src={`/images/dice-${props.value}.png `} alt="dice" className="dice-img"/>
         </div>
     )
